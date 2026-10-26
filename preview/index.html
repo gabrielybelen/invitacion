@@ -318,10 +318,10 @@
   .frase .divisor{ margin:14px auto 14px; color:var(--dorado); }
   .anillos-marco{
     position:relative;
-    width:min(46vw, 180px, 24svh);
-    aspect-ratio:4 / 5;
+    width:min(72vw, 280px, 34svh);
+    aspect-ratio:4 / 3;
     margin:0 auto 20px;
-    border-radius:120px 120px 10px 10px;
+    border-radius:150px 150px 10px 10px;
     border:1.5px solid var(--dorado);
     padding:7px;
     background:rgba(251,250,246,.05);
@@ -332,7 +332,7 @@
     inset:7px;
     width:calc(100% - 14px);
     height:calc(100% - 14px);
-    border-radius:113px 113px 6px 6px;
+    border-radius:143px 143px 6px 6px;
   }
   .anillos-marco img{ object-fit:cover; }
   .anillos-dibujo{ padding:10%; background:rgba(251,250,246,.06); }
@@ -994,11 +994,10 @@
   .album{
     display:grid;
     grid-template-columns:repeat(6, 1fr);
-    grid-template-rows:1.55fr 1.2fr 1fr;
+    grid-template-rows:1.35fr 1fr;
     grid-template-areas:
-      "a a a a a a"
-      "b b c c e e"
-      "d d d d d d";
+      "a a a b b b"
+      "c c d d e e";
     gap:12px 10px;
     margin-top:4px;
     height:min(62svh, 540px);
@@ -1009,11 +1008,11 @@
   .polaroid.f4{ grid-area:d; }
   .polaroid.f5{ grid-area:e; }
   /* encuadre de cada foto para que no se corten las caras */
-  .polaroid.f1 img{ object-position:50% 38%; }
-  .polaroid.f2 img{ object-position:50% 12%; }
-  .polaroid.f3 img{ object-position:50% 30%; }
-  .polaroid.f4 img{ object-position:50% 46%; }
-  .polaroid.f5 img{ object-position:50% 14%; }
+  .polaroid.f1 img{ object-position:50% 22%; }
+  .polaroid.f2 img{ object-position:50% 45%; }
+  .polaroid.f3 img{ object-position:50% 58%; }
+  .polaroid.f4 img{ object-position:58% 52%; }
+  .polaroid.f5 img{ object-position:50% 64%; }
   .polaroid{
     background:var(--blanco);
     padding:6px;
@@ -1184,11 +1183,11 @@
 
           <!-- Para cambiar fotos: reemplaza los archivos en la carpeta /fotos (mismo nombre) -->
           <div class="album">
-            <button class="polaroid f1" type="button"><img src="../fotos/principal.jpg" alt="Gabriel y Belén en el marco de flores" decoding="async"></button>
-            <button class="polaroid f2" type="button"><img src="../fotos/foto-2.jpg" alt="Gabriel y Belén abrazados" decoding="async"></button>
-            <button class="polaroid f3" type="button"><img src="../fotos/foto-3.jpg" alt="Gabriel y Belén de noche junto al barco" decoding="async"></button>
-            <button class="polaroid f5" type="button"><img src="../fotos/foto-5.jpg" alt="Gabriel y Belén en el parque" decoding="async"></button>
-            <button class="polaroid f4" type="button"><img src="../fotos/foto-4.jpg" alt="Gabriel cargando a Belén en el mirador" decoding="async"></button>
+            <button class="polaroid f1" type="button"><img src="../fotos/principal.jpg" alt="Gabriel y Belén abrazados en el parque" decoding="async"></button>
+            <button class="polaroid f2" type="button"><img src="../fotos/foto-2.jpg" alt="Gabriel y Belén de noche junto al barco" decoding="async"></button>
+            <button class="polaroid f3" type="button"><img src="../fotos/foto-3.jpg" alt="Gabriel y Belén brindando en la playa" decoding="async"></button>
+            <button class="polaroid f4" type="button"><img src="../fotos/foto-4.jpg" alt="Belén besando a Gabriel frente a la cascada" decoding="async"></button>
+            <button class="polaroid f5" type="button"><img src="../fotos/foto-5.jpg" alt="Gabriel y Belén bajo la cascada" decoding="async"></button>
           </div>
         </div>
       </section>
