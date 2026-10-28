@@ -1099,6 +1099,51 @@
   @media (prefers-reduced-motion: reduce){
     .nav-btn.siguiente.pulso{ animation:none; }
   }
+
+  /* ---------- Banner inicial: ¿Deseas escuchar música? ---------- */
+  .aviso-musica{
+    position:fixed; inset:0; z-index:9999;
+    display:flex; align-items:center; justify-content:center;
+    padding:20px;
+    background:rgba(43,43,38,.55);
+    -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+    transition:opacity .35s ease;
+  }
+  .aviso-musica.oculto{ opacity:0; pointer-events:none; }
+  .aviso-musica-caja{
+    width:100%; max-width:420px;
+    background:var(--blanco);
+    border-radius:28px;
+    padding:40px 28px 32px;
+    text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,.25);
+    animation:avisoEntrar .45s ease both;
+  }
+  @keyframes avisoEntrar{ from{ opacity:0; transform:translateY(16px) scale(.97); } to{ opacity:1; transform:none; } }
+  .aviso-musica-icono{
+    width:76px; height:76px; margin:0 auto 22px;
+    border-radius:50%;
+    background:var(--oliva-suave); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .aviso-musica-icono svg{ width:34px; height:34px; }
+  .aviso-musica h2{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600; font-size:1.9rem; line-height:1.15;
+    color:var(--tinta); margin-bottom:12px;
+  }
+  .aviso-musica p{ color:var(--marino-suave); font-size:1rem; line-height:1.6; margin-bottom:28px; }
+  .aviso-musica-botones{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .aviso-musica-botones button{
+    font-family:'Jost', sans-serif; font-size:1.05rem;
+    padding:14px 10px; border-radius:16px; cursor:pointer;
+    transition:transform .15s ease, background .2s ease;
+  }
+  .aviso-musica-botones button:active{ transform:scale(.97); }
+  .btn-sin-musica{ background:transparent; color:var(--tinta); border:1.5px solid var(--mantequilla-oscuro); font-weight:400; }
+  .btn-con-musica{ background:var(--oliva); color:#fff; border:1.5px solid var(--oliva); font-weight:500; }
+  .btn-con-musica:hover{ background:var(--marino-suave); }
+  @media (prefers-reduced-motion: reduce){ .aviso-musica-caja{ animation:none; } }
 </style>
 </head>
 <body>
@@ -1449,6 +1494,21 @@
 
   <!-- Visor de fotos -->
   <div class="visor" id="visor" role="dialog" aria-label="Foto ampliada"><img id="visorImg" alt="Gabriel y Belén"></div>
+
+  <!-- ============ BANNER INICIAL DE MÚSICA ============ -->
+  <div class="aviso-musica" id="avisoMusica" role="dialog" aria-modal="true" aria-labelledby="avisoMusicaTitulo">
+    <div class="aviso-musica-caja">
+      <div class="aviso-musica-icono" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      </div>
+      <h2 id="avisoMusicaTitulo">¿Deseas escuchar música?</h2>
+      <p>Esta invitación incluye música de fondo especialmente seleccionada para ti.</p>
+      <div class="aviso-musica-botones">
+        <button type="button" class="btn-sin-musica" id="btnSinMusica">Sin música</button>
+        <button type="button" class="btn-con-musica" id="btnConMusica">Con música</button>
+      </div>
+    </div>
+  </div>
 
   <!-- ============ BOTÓN DE MÚSICA ============ -->
   <button id="musicToggle" class="boton-musica" aria-label="Reproducir música" aria-pressed="false" type="button">
@@ -1929,6 +1989,23 @@
   musicBtn.addEventListener("click", () => {
     if (!scWidget) return;
     scWidget.toggle();
+  });
+  /* ---------- Banner inicial de música ---------- */
+  const avisoMusica = document.getElementById("avisoMusica");
+  let quiereMusica = false;
+  function cerrarAvisoMusica(){
+    avisoMusica.classList.add("oculto");
+    setTimeout(() => avisoMusica.remove(), 400);
+  }
+  document.getElementById("btnSinMusica").addEventListener("click", cerrarAvisoMusica);
+  document.getElementById("btnConMusica").addEventListener("click", () => {
+    quiereMusica = true;
+    if (scWidget) scWidget.play();
+    cerrarAvisoMusica();
+  });
+  window.addEventListener("load", () => {
+    // Si eligió "Con música" antes de que cargara el reproductor, arranca apenas esté listo
+    if (scWidget) scWidget.bind(SC.Widget.Events.READY, () => { if (quiereMusica) scWidget.play(); });
   });
 </script>
 
