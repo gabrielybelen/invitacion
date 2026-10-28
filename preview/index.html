@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Gabriel &amp; Belén · 20 de diciembre de 2026</title>
-<meta name="description" content="Invitación de matrimonio de Gabriel y Belén · 20 de diciembre de 2026 · Quevedo.">
+<meta name="description" content="Invitación de matrimonio de Gabriel y Belén · 20 de diciembre de 2026 · Guayaquil.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Gabriel &amp; Belén">
 <meta property="og:locale" content="es_EC">
 <meta property="og:title" content="Gabriel &amp; Belén | Invitación">
-<meta property="og:description" content="Invitación de matrimonio de Gabriel y Belén · 20 de diciembre de 2026 · Quevedo.">
+<meta property="og:description" content="Invitación de matrimonio de Gabriel y Belén · 20 de diciembre de 2026 · Guayaquil.">
 <meta property="og:url" content="https://gpinela94-hub.github.io/boda-gabriel-belen/preview/">
 <meta property="og:image" content="https://gpinela94-hub.github.io/boda-gabriel-belen/preview.jpg">
 <meta property="og:image:secure_url" content="https://gpinela94-hub.github.io/boda-gabriel-belen/preview.jpg">
@@ -1834,6 +1834,12 @@
   let pases = parseInt(parametros.get("pases"), 10);
   if (!Number.isFinite(pases) || pases < 1) pases = 1;
   if (pases > 20) pases = 20;
+
+  /* Si llegó desde un link bonito (/invitacion/nombre), deja ese link en la barra */
+  const slugInvitado = parametros.get("s");
+  if (slugInvitado && /^[a-z0-9-]+$/.test(slugInvitado)) {
+    try { history.replaceState(null, "", "../invitacion/" + slugInvitado); } catch (e) {}
+  }
 
   document.getElementById("paseNombre").textContent = invitado;
   document.getElementById("pasePersonas").textContent =
