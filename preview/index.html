@@ -10,9 +10,9 @@
 <meta property="og:locale" content="es_EC">
 <meta property="og:title" content="Gabriel &amp; Belén | Invitación">
 <meta property="og:description" content="Invitación de matrimonio de Gabriel y Belén · 20 de diciembre de 2026 · Guayaquil.">
-<meta property="og:url" content="https://gpinela94-hub.github.io/boda-gabriel-belen/preview/">
-<meta property="og:image" content="https://gpinela94-hub.github.io/boda-gabriel-belen/preview.jpg">
-<meta property="og:image:secure_url" content="https://gpinela94-hub.github.io/boda-gabriel-belen/preview.jpg">
+<meta property="og:url" content="https://gabrielybelen.github.io/invitacion/preview/">
+<meta property="og:image" content="https://gabrielybelen.github.io/invitacion/preview.jpg">
+<meta property="og:image:secure_url" content="https://gabrielybelen.github.io/invitacion/preview.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -1898,7 +1898,7 @@
   /* Si llegó desde un link bonito (/invitacion/nombre), deja ese link en la barra */
   const slugInvitado = parametros.get("s");
   if (slugInvitado && /^[a-z0-9-]+$/.test(slugInvitado)) {
-    try { history.replaceState(null, "", "../invitacion/" + slugInvitado); } catch (e) {}
+    try { history.replaceState(null, "", "/invitacion/" + slugInvitado); } catch (e) {}
   }
 
   document.getElementById("paseNombre").textContent = invitado;
@@ -1971,7 +1971,7 @@
      2) Si ese archivo no existe, usa SoundCloud (funciona en computadora). */
   const musicBtn = document.getElementById("musicToggle");
   const audioFondo = new Audio();
-  audioFondo.src = "/boda-gabriel-belen/musica/cancion.mp3";
+  audioFondo.src = "/invitacion/musica/cancion.mp3";
   audioFondo.loop = true;
   audioFondo.preload = "auto";
   audioFondo.setAttribute("playsinline", "");
