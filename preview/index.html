@@ -1966,46 +1966,77 @@
     exito.classList.add("mostrar");
   }
 
-  /* ---------- Botón de música (SoundCloud Widget API) ---------- */
+  /* ---------- Música de fondo ----------
+     1) Primero intenta con el archivo propio musica/cancion.mp3 (funciona en celulares).
+     2) Si ese archivo no existe, usa SoundCloud (funciona en computadora). */
   const musicBtn = document.getElementById("musicToggle");
+  const audioFondo = new Audio();
+  audioFondo.src = "/boda-gabriel-belen/musica/cancion.mp3";
+  audioFondo.loop = true;
+  audioFondo.preload = "auto";
+  audioFondo.setAttribute("playsinline", "");
+  let audioPropioOk = true;   // pasa a false si el mp3 no existe
   let scWidget = null;
+  let quiereMusica = false;
+
+  function marcarBoton(sonando){
+    musicBtn.classList.toggle("reproduciendo", sonando);
+    musicBtn.setAttribute("aria-pressed", sonando ? "true" : "false");
+    musicBtn.setAttribute("aria-label", sonando ? "Pausar música" : "Reproducir música");
+  }
+
+  audioFondo.addEventListener("play", () => marcarBoton(true));
+  audioFondo.addEventListener("pause", () => marcarBoton(false));
+  audioFondo.addEventListener("error", () => { audioPropioOk = false; });
 
   window.addEventListener("load", () => {
     if (window.SC && window.SC.Widget){
       scWidget = SC.Widget(document.getElementById("scPlayer"));
-      scWidget.bind(SC.Widget.Events.PLAY, () => {
-        musicBtn.classList.add("reproduciendo");
-        musicBtn.setAttribute("aria-pressed", "true");
-        musicBtn.setAttribute("aria-label", "Pausar música");
-      });
-      scWidget.bind(SC.Widget.Events.PAUSE, () => {
-        musicBtn.classList.remove("reproduciendo");
-        musicBtn.setAttribute("aria-pressed", "false");
-        musicBtn.setAttribute("aria-label", "Reproducir música");
+      scWidget.bind(SC.Widget.Events.PLAY, () => marcarBoton(true));
+      scWidget.bind(SC.Widget.Events.PAUSE, () => marcarBoton(false));
+      scWidget.bind(SC.Widget.Events.READY, () => {
+        if (quiereMusica && !audioPropioOk) scWidget.play();
       });
     }
   });
 
+  function reproducir(){
+    quiereMusica = true;
+    if (audioPropioOk){
+      // play() se llama directo dentro del toque: así iPhone y Android lo permiten
+      const intento = audioFondo.play();
+      if (intento && intento.catch){
+        intento.catch(() => {
+          audioPropioOk = !!audioFondo.currentSrc && audioFondo.error === null && audioFondo.readyState > 0;
+          if (!audioPropioOk && scWidget) scWidget.play();
+        });
+      }
+    } else if (scWidget){
+      scWidget.play();
+    }
+  }
+
+  function pausar(){
+    quiereMusica = false;
+    if (!audioFondo.paused) audioFondo.pause();
+    if (scWidget) scWidget.pause();
+  }
+
   musicBtn.addEventListener("click", () => {
-    if (!scWidget) return;
-    scWidget.toggle();
+    if (musicBtn.classList.contains("reproduciendo")) pausar();
+    else reproducir();
   });
+
   /* ---------- Banner inicial de música ---------- */
   const avisoMusica = document.getElementById("avisoMusica");
-  let quiereMusica = false;
   function cerrarAvisoMusica(){
     avisoMusica.classList.add("oculto");
     setTimeout(() => avisoMusica.remove(), 400);
   }
   document.getElementById("btnSinMusica").addEventListener("click", cerrarAvisoMusica);
   document.getElementById("btnConMusica").addEventListener("click", () => {
-    quiereMusica = true;
-    if (scWidget) scWidget.play();
+    reproducir();
     cerrarAvisoMusica();
-  });
-  window.addEventListener("load", () => {
-    // Si eligió "Con música" antes de que cargara el reproductor, arranca apenas esté listo
-    if (scWidget) scWidget.bind(SC.Widget.Events.READY, () => { if (quiereMusica) scWidget.play(); });
   });
 </script>
 
